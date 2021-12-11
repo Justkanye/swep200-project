@@ -7,10 +7,14 @@ from django.dispatch import receiver
 
 class SessionYearModel(models.Model):
     # id = models.AutoField(primary_key=True)
+    session_name = models.CharField(max_length=10, unique=True)
     session_start_year = models.DateField()
     session_end_year = models.DateField()
     session_name = models.CharField(max_length=9)
     objects = models.Manager()
+
+    def __str__(self):
+        return f"{ self.session_name }"
 
 
 
@@ -41,14 +45,14 @@ class Staffs(models.Model):
 
 class Courses(models.Model):
     # id = models.AutoField(primary_key=True)
-    course_name = models.CharField(max_length=30)
+    course_name = models.CharField(max_length=30, unique=True)
     course_desc = models.CharField(max_length=255, default='')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = models.Manager()
 
-    # def __str__(self):
-	#     return self.course_name
+    def __str__(self):
+	    return self.course_name
 
 
 

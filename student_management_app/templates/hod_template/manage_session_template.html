@@ -60,6 +60,7 @@
                             <thead>
                                 <tr>
                                 <th>ID</th>
+                                <th>Session Name</th>
                                 <th>Session Start Year</th>
                                 <th>Session End Year</th>
                                 <th>Action</th>
@@ -69,6 +70,7 @@
                                 {% for session_year in session_years %}
                                 <tr>
                                 <td>{{ session_year.id }}</td>
+                                <td>{{ session_year.session_name }}</td>
                                 <td>{{ session_year.session_start_year }}</td>
                                 <td>{{ session_year.session_end_year }}</td>
                                 <td>

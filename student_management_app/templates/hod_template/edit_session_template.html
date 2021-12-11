@@ -52,6 +52,10 @@
 
                         <div class="card-body">
                             <div class="form-group">
+                                <label for="session_name">Session Name</label>
+                                <input type="text" name="session_name" id='session_name' class="form-control" value="{{ session_year.session_name }}" />
+                            </div>
+                            <div class="form-group">
                                 <label>Session Start Year </label>
                                 <input type="date" class="form-control" name="session_start_year" value="{{ session_year.session_start_year|date:'Y-m-d' }}">
                             </div>

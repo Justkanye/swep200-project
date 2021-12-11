@@ -266,11 +266,12 @@ def add_session_save(request):
         messages.error(request, "Invalid Method")
         return redirect('add_course')
     else:
+        session_name = request.POST.get('session_name')
         session_start_year = request.POST.get('session_start_year')
         session_end_year = request.POST.get('session_end_year')
 
         try:
-            sessionyear = SessionYearModel(session_start_year=session_start_year, session_end_year=session_end_year)
+            sessionyear = SessionYearModel(session_name=session_name, session_start_year=session_start_year, session_end_year=session_end_year)
             sessionyear.save()
             messages.success(request, "Session Year added Successfully!")
             return redirect("add_session")
@@ -293,11 +294,13 @@ def edit_session_save(request):
         return redirect('manage_session')
     else:
         session_id = request.POST.get('session_id')
+        session_name = request.POST.get('session_name')
         session_start_year = request.POST.get('session_start_year')
         session_end_year = request.POST.get('session_end_year')
 
         try:
             session_year = SessionYearModel.objects.get(id=session_id)
+            session_year.session_name = session_name
             session_year.session_start_year = session_start_year
             session_year.session_end_year = session_end_year
             session_year.save()
@@ -344,8 +347,8 @@ def add_student_save(request):
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
             address = form.cleaned_data['address']
-            session_year_id = form.cleaned_data['session_year_id']
-            course_id = form.cleaned_data['course_id']
+            session_year_name = form.cleaned_data['session_year_name']
+            course_name = form.cleaned_data['course_name']
             gender = form.cleaned_data['gender']
 
             # Getting Profile Pic first
@@ -364,10 +367,10 @@ def add_student_save(request):
                 user = CustomUser.objects.create_user(username=username, password=password, email=email, first_name=first_name, last_name=last_name, user_type=3)
                 user.students.address = address
 
-                course_obj = Courses.objects.get(id=course_id)
+                course_obj = Courses.objects.get(course_name=course_name)
                 user.students.course_id = course_obj
 
-                session_year_obj = SessionYearModel.objects.get(id=session_year_id)
+                session_year_obj = SessionYearModel.objects.get(session_name=session_year_name)
                 user.students.session_year_id = session_year_obj
 
                 user.students.gender = gender
@@ -402,9 +405,9 @@ def edit_student(request, student_id):
     form.fields['first_name'].initial = student.admin.first_name
     form.fields['last_name'].initial = student.admin.last_name
     form.fields['address'].initial = student.address
-    form.fields['course_id'].initial = student.course_id.id
+    form.fields['course_name'].initial = student.course_name.course_name
     form.fields['gender'].initial = student.gender
-    form.fields['session_year_id'].initial = student.session_year_id.id
+    form.fields['session_year_name'].initial = student.session_year_name.session_name
 
     context = {
         "id": student_id,
@@ -429,9 +432,9 @@ def edit_student_save(request):
             first_name = form.cleaned_data['first_name']
             last_name = form.cleaned_data['last_name']
             address = form.cleaned_data['address']
-            course_id = form.cleaned_data['course_id']
+            course_name = form.cleaned_data['course_name']
             gender = form.cleaned_data['gender']
-            session_year_id = form.cleaned_data['session_year_id']
+            session_year_name = form.cleaned_data['session_year_name']
 
             # Getting Profile Pic first
             # First Check whether the file is selected or not
@@ -457,11 +460,11 @@ def edit_student_save(request):
                 student_model = Students.objects.get(admin=student_id)
                 student_model.address = address
 
-                course = Courses.objects.get(id=course_id)
+                course = Courses.objects.get(course_name=course_name)
                 student_model.course_id = course
 
-                session_year_obj = SessionYearModel.objects.get(id=session_year_id)
-                student_model.session_year_id = session_year_obj
+                session_year_obj = SessionYearModel.objects.get(session_name=session_year_name)
+                student_model.session_year_name = session_year_obj
 
                 student_model.gender = gender
                 if profile_pic_url != None:
