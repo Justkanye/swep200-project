@@ -405,9 +405,9 @@ def edit_student(request, student_id):
     form.fields['first_name'].initial = student.admin.first_name
     form.fields['last_name'].initial = student.admin.last_name
     form.fields['address'].initial = student.address
-    form.fields['course_name'].initial = student.course_name.course_name
+    form.fields['course_name'].initial = student.course_id.course_name
     form.fields['gender'].initial = student.gender
-    form.fields['session_year_name'].initial = student.session_year_name.session_name
+    form.fields['session_year_name'].initial = student.session_year_id.session_name
 
     context = {
         "id": student_id,
